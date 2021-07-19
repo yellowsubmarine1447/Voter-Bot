@@ -77,9 +77,11 @@ async def help(context):  # Help message dm'd
   await context.message.author.send(help_message)
 
 #@client.command(pass_context=True)
-
+NIGHT_CHANNGEL = 603466270746214421
+DATABASE_CHANNEL 601943715912744964
+MAFIA_SERVER = 574533043084066816
 async def vote(context):
-    async for msg in client.get_channel(603466270746214421).history(limit=1):  # check if it's day or night (yes means it is night)
+    async for msg in client.get_channel(NIGHT_CHANNEL).history(limit=1):  # check if it's day or night (yes means it is night)
       if msg.content == "Yes":
         return
     allowed = False
@@ -96,7 +98,7 @@ async def vote(context):
       output = "Boat"
     else:
       if len(message) > len("$vote "):  # correctly formatted with space
-          chann = client.get_channel(601943715912744964)  # the "database" *wink* *wink*
+          chann = client.get_channel(DATABASE_CHANNEL)  # the "database" *wink* *wink*
           votes, voters = await chann.history(limit=2).flatten()  # Fix so that it only reads one message
           votes, voters = GetDetails(votes, voters)  # Gets votes and voters after passing raw data in
           person = message[6:]
@@ -133,7 +135,7 @@ async def vote(context):
 #@client.command(pass_context=True)
 
 async def unvote(context):
-    async for msg in client.get_channel(603466270746214421).history(limit=1):
+    async for msg in client.get_channel(NIGHT_CHANNGEL).history(limit=1):
       if msg.content == "Yes":
         return
     allowed = False
@@ -143,17 +145,14 @@ async def unvote(context):
     if not allowed:
       await context.message.delete()
       return
-    chann = client.get_channel(601943715912744964)
+    chann = client.get_channel(DATABASE_CHANNEL)
     votes, voters = await chann.history(limit=2).flatten()  # Again, limit should be 1
     votes, voters = GetDetails(votes, voters)  # Gets votes and voters after passing raw data in
     
     if context.message.author.nick not in voters:
         output = "You have not voted. This command is only useable if you have voted"
     else:
-        if context.message.author.nick == "Max P":
-          output = "I did it s-senpai"
-        else:
-          output = "All good :ok_hand:"
+        output = "All good :ok_hand:"
         person = voters[context.message.author.nick]
         votes[person].remove(context.message.author.nick)
         if votes[person] == []:
@@ -172,7 +171,7 @@ async def reset(context):
         permissible = True
         break
     if permissible:
-      chann = client.get_channel(601943715912744964)
+      chann = client.get_channel(DATABASE_CHANNEL)
       await chann.send("*")
       await chann.send("*")  # Message as one thing
       output = "It has been done"
@@ -184,11 +183,11 @@ async def reset(context):
 #@client.command(pass_context=True)
 
 async def results(context):
-  async for msg in client.get_channel(603466270746214421).history(limit=1):
+  async for msg in client.get_channel(NIGHT_CHANNEL).history(limit=1):
       if msg.content == "Yes":  # Check if it's night or day, "Yes" means it's night
         return
   await context.message.delete()  # Delete message to reduce spam
-  channel = client.get_channel(601943715912744964)  # The "database" channel
+  channel = client.get_channel(DATABASE_CHANNEL)  # The "database" channel
   v = False
   output = []
   async for foo in channel.history(limit=2):  # Ughhh heck, wonder if we can use the GetVotes command...?
@@ -220,7 +219,7 @@ async def end_day(context):
   if not permissible:
     return
 
-  message_channel = client.get_channel(601943715912744964)
+  message_channel = client.get_channel(DATABASE_CHANNEL)
   v = False
   message = []
   async for line in message_channel.history(limit=2):  # Oh god oh fuck
@@ -283,14 +282,14 @@ async def end_day(context):
     await context.channel.send("No one was lynched.")
   else:
     await context.channel.send(lynched + " was lynched.")
-    await dead.remove_roles(get(context.guild.roles,id=570830233079513088))
+    await dead.remove_roles(get(context.guild.roles,id=MAFIA_SERVER))
     #real_alive = 570830233079513088
     #fake_alive = 603472901970329620
-    await dead.add_roles(get(context.guild.roles, id=574533043084066816))
+    await dead.add_roles(get(context.guild.roles, id=MAFIA_SERVER))
     #real_dead = 574533043084066816
     #fake_dead = 603472880004759568
     await dead.send("You have been lynched in the day. soz bud.")
-  await client.get_channel(603466270746214421).send("Yes")
+  await client.get_channel(NIGHT_CHANNEL).send("Yes")
   await context.channel.send("The day has been deactivated. Votes will no longer be counted.")
   await message_channel.send("*")
   await message_channel.send("*")
@@ -306,27 +305,8 @@ async def end_night(context):
 
   if not permissible:
     return
-  await client.get_channel(603466270746214421).send("No")
+  await client.get_channel(NIGHT_CHANNEL).send("No")
   await context.channel.send("The day has been activated. You may now send your votes.")
-
-#@client.event
-async def on_message(message):
-  gid = message.guild.id
-  if gid == 625933318072041472:
-    m = message.content.lower()
-    if "y" in m:
-      if "e" in m[m.index("y"):]:
-        if "s" in m[m.index("e"):]:
-          await message.delete()
-
-@client.command(pass_context=True)
-async def beach(ctx):
-  if ctx.message.content[6:] == " yes":
-    pass
-  elif ctx.message.content[6:] == " no":
-    pass
-  else:
-    await ctx.channel.send("Please give a valid response")
 
 keep_alive()
 TOKEN = os.environ.get("DISCORD_BOT_SECRET")
