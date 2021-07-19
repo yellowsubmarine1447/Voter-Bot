@@ -77,9 +77,6 @@ async def help(context):  # Help message dm'd
   await context.message.author.send(help_message)
 
 #@client.command(pass_context=True)
-NIGHT_CHANNGEL = 603466270746214421
-DATABASE_CHANNEL 601943715912744964
-MAFIA_SERVER = 574533043084066816
 async def vote(context):
     async for msg in client.get_channel(NIGHT_CHANNEL).history(limit=1):  # check if it's day or night (yes means it is night)
       if msg.content == "Yes":
