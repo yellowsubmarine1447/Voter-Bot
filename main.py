@@ -15,6 +15,22 @@ client = commands.Bot(command_prefix=BOT_PREFIX)
 client.remove_command("help")  # To set on help command
 message_channel = "BOTTOM_TEXT"
 
+thanos_quotes = ["But he is inevitable.", "But reality can be whatever he wants.", "But they should've gone for the head."]
+
+help_message = """
+```
+Normal commands:
+$vote - Takes in one argument. Vote for person on the server in the format '$vote [name of person]' (e.g. $vote John S), or 'no-lynch', as '$vote no-lynch' (not case sensitive, but include the hyphen). If you have already voted for someone, it will automatically change your vote.
+$unvote - Takes in no arguments. This allows you to vote for no one. You do not have to use it to retract your vote and vote for someone else, as the vote command automatically does that for you.
+$help - Takes in no arguments. iT'S sO MetA BrO. Dm's all commands to you, so no clogging the server
+$results - Takes in no arguments. Shows all the votes so far through dms, again, for the purpose of not clogging the server.
+$joke - Takes in no argments. Recites a comedic phrase that has been told by someone at some point in time.
+Admin commands:
+$reset - Takes in no arguments. Game Host ONLY. Resets all the votes, pretty simple. Emergency reset system, since ending the day simply doesthat
+$end_day - Takes in no arguments. Game Host ONLY. Give the command in #story. Deletes the message, counts up the votes, displays the votes, finds the person with the most votes, informs that they were lynched, and then it "kills" them. Then, the day ends, and no more votes can be sent. The votes are then reset.
+$end_night - Takes in no arguments. Game Host ONLY. Give the command in #story. Ends the night (for the voting bot), so that votes can be taken in once again.
+```
+"""
 
 def GetDetails(votes_raw, voters_raw):  # Change so that it takes in votes and voters as the args.
   votes, voters = {}, {}
